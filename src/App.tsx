@@ -4,6 +4,7 @@ import "./App.css";
 function App() {
   // inputValueという変数にsetInputValue関数を使って値を詰める
   const [inputValue, setInputValue] = useState("");
+  // useState<Todo[]>([])で<Todo[]>という型指定をしている。初期値は空の配列
   const [todos, setTodos] = useState<Todo[]>([]);
 
   type Todo = {
@@ -32,7 +33,15 @@ function App() {
     setInputValue("");
   };
 
-  const handleEdit = () => {};
+  const handleEdit = (id: number, inputValue: string) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        todo.inputValue = inputValue;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+  };
 
   return (
     <div className="App">
@@ -55,7 +64,7 @@ function App() {
             <li key={todo.id}>
               <input
                 type="text"
-                onChange={() => handleEdit()}
+                onChange={(e) => handleEdit(todo.id, e.target.value)}
                 className="inputText"
                 value={todo.inputValue}
               />
